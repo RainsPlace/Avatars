@@ -101,6 +101,43 @@
         .li-card.mg .li-link{border-color:rgba(160,184,208,.25);color:#a0b8d0;} .li-card.mg .li-link:hover{background:rgba(160,184,208,.1);border-color:#a0b8d0;color:#fff;}
         .li-card.hr .li-card-hdr{border-bottom-color:rgba(96,192,128,.35);} .li-card.hr .li-card-name{color:#60c080;} .li-card.hr .li-sched-day{color:#60c080;}
         .li-card.hr .li-link{border-color:rgba(96,192,128,.25);color:#60c080;} .li-card.hr .li-link:hover{background:rgba(96,192,128,.1);border-color:#60c080;color:#fff;}
+
+        /* CARD ACTIONS */
+        .avatar-card img { cursor: grab; }
+        .avatar-card img:active { cursor: grabbing; }
+        .card-actions { display:flex; gap:5px; margin-top:8px; justify-content:center; }
+        .act-btn { flex:1; font-family:'Cinzel',serif; font-size:.6rem; font-weight:700; letter-spacing:.05em; padding:6px 2px; border-radius:6px; border:1px solid var(--border-gold); background:rgba(201,168,76,.06); color:var(--gold); cursor:pointer; transition:all .2s; white-space:nowrap; }
+        .act-btn:hover { background:rgba(201,168,76,.18); border-color:var(--gold); color:var(--gold-light); }
+        .act-btn.ok { border-color:#60c080; color:#60c080; }
+        .act-btn.err { border-color:#e85050; color:#e85050; }
+        .vault-hint { max-width:900px; margin:-14px auto 10px; font-size:.95rem; color:var(--text-dim); font-style:italic; }
+        .vault-hint a { color:var(--gold); cursor:pointer; text-decoration:underline; }
+        #toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--bg-panel); border:1px solid var(--gold); color:var(--gold-light); font-family:'Cinzel',serif; font-size:.8rem; letter-spacing:.06em; padding:10px 20px; border-radius:30px; opacity:0; pointer-events:none; transition:all .25s; z-index:99; max-width:90vw; }
+        #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+        /* HOW-TO TAB */
+        .ht-wrap { max-width:900px; margin:0 auto; padding:8px 20px 48px; text-align:left; }
+        .ht-intro { font-size:1.05rem; color:var(--text-dim); line-height:1.7; margin-bottom:28px; text-align:center; font-style:italic; }
+        .ht-card { background:var(--bg-card); border:1px solid var(--border-gold); border-radius:10px; overflow:hidden; margin-bottom:28px; }
+        .ht-hdr { display:flex; align-items:center; gap:14px; padding:16px 22px; background:var(--bg-dark); border-bottom:2px solid var(--border-gold); }
+        .ht-hdr .ic { font-size:1.6rem; }
+        .ht-name { font-family:'Cinzel',serif; font-size:1.15rem; font-weight:700; letter-spacing:.08em; color:var(--gold); }
+        .ht-tag { display:block; font-family:'Cinzel',serif; font-size:.72rem; letter-spacing:.16em; color:var(--text-dim); text-transform:uppercase; margin-top:2px; }
+        .ht-body { padding:18px 22px; }
+        .ht-sub { font-family:'Cinzel',serif; font-size:.8rem; font-weight:700; letter-spacing:.2em; color:var(--gold-light); text-transform:uppercase; margin:20px 0 10px; border-bottom:1px solid var(--border); padding-bottom:6px; }
+        .ht-sub:first-child { margin-top:0; }
+        ol.ht-steps { margin:0; padding:0; list-style:none; counter-reset:st; }
+        ol.ht-steps li { counter-increment:st; position:relative; padding:9px 12px 9px 50px; margin-bottom:6px; background:var(--bg-panel); border-radius:6px; line-height:1.55; font-size:1rem; }
+        ol.ht-steps li::before { content:counter(st); position:absolute; left:12px; top:8px; width:26px; height:26px; border-radius:50%; border:1px solid var(--gold); color:var(--gold); font-family:'Cinzel',serif; font-size:.8rem; display:flex; align-items:center; justify-content:center; }
+        .ht-body b { color:var(--gold-light); font-weight:700; }
+        .kbd { display:inline-block; font-family:monospace; font-size:.85rem; padding:1px 7px; border:1px solid var(--border); border-bottom-width:2px; border-radius:4px; background:var(--bg-dark); color:var(--text-main); }
+        .ht-methods { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .ht-method { background:var(--bg-panel); border:1px solid var(--border); border-radius:8px; padding:14px 16px; }
+        .ht-method h4 { margin:0 0 8px; font-family:'Cinzel',serif; font-size:.9rem; letter-spacing:.06em; color:var(--gold); }
+        .ht-method p { margin:0 0 6px; line-height:1.55; font-size:.95rem; }
+        .ht-best { font-family:'Cinzel',serif; font-size:.6rem; letter-spacing:.12em; color:#60c080; border:1px solid #60c080; border-radius:10px; padding:1px 7px; margin-left:6px; vertical-align:middle; }
+        .ht-tip { margin-top:14px; padding:10px 14px; border-left:3px solid var(--gold); background:rgba(201,168,76,.06); border-radius:0 6px 6px 0; font-size:.93rem; line-height:1.55; color:var(--text-main); }
+        @media(max-width:700px) { .ht-methods { grid-template-columns:1fr; } .card-actions{flex-wrap:wrap;} }
     </style>
 </head>
 <body>
@@ -109,16 +146,96 @@
 
     <nav class="tab-nav">
         <button class="tab-btn active" onclick="switchTab('gallery')">🖼 Avatar Gallery</button>
+        <button class="tab-btn" onclick="switchTab('howto')">❓ How To Use Your Avatar</button>
         <button class="tab-btn" onclick="switchTab('leagueinfo')">🗺 Leagues Info</button>
     </nav>
 
     <!-- AVATAR GALLERY TAB -->
     <div id="tab-gallery">
+        <p class="vault-hint">Drag any avatar straight into Replay&rsquo;s upload box, or use the <b>Copy</b>, <b>Link</b> and <b>Save</b> buttons under each one. New here? <a onclick="switchTab('howto')">See the step-by-step guide.</a></p>
         <div id="main-container">Loading League Folders...</div>
         <div style="margin-top: 80px; padding-bottom: 60px; text-align: center; clear: both;">
             <img id="league-counter" src="https://hitscounter.dev/api/hit?url=https%3A%2F%2Frainsplace.github.io%2FAvatars%2F&label=Visits&icon=cloud-drizzle&color=%23198754&style=flat">
         </div>
     </div>
+
+    <!-- HOW-TO TAB -->
+    <div id="tab-howto" style="display:none">
+    <div class="ht-wrap">
+
+      <p class="ht-intro">Two ways to put a new avatar on your Replay Poker profile &mdash; straight from this Vault (the easy way), or from a friend&rsquo;s profile. Both finish in the same Replay upload box.</p>
+
+      <!-- METHOD 1: VAULT -->
+      <div class="ht-card">
+        <div class="ht-hdr"><span class="ic">🖼</span><div><span class="ht-name">Method 1 &mdash; Get It From the Avatar Vault</span><span class="ht-tag">Recommended · Four ways to grab it</span></div></div>
+        <div class="ht-body">
+
+          <div class="ht-sub">Part A &mdash; Open Replay&rsquo;s upload box</div>
+          <ol class="ht-steps">
+            <li>Keep this Vault open and open <b>Replay Poker</b> in a second browser tab (or window side by side).</li>
+            <li>On Replay, click the <b>drop-down arrow</b> at the top right and choose <b>&ldquo;Profile&rdquo;</b>.</li>
+            <li>When your profile opens, click <b>&ldquo;Edit Profile&rdquo;</b>.</li>
+            <li>Click the <b>&ldquo;Change&rdquo;</b> button next to your current avatar. The upload box opens &mdash; it says <i>&ldquo;Select Files to Upload &middot; or Drag and Drop, Copy and Paste Files.&rdquo;</i></li>
+          </ol>
+
+          <div class="ht-sub">Part B &mdash; Grab your avatar from the Vault (pick one)</div>
+          <div class="ht-methods">
+            <div class="ht-method">
+              <h4>🖱 Drag &amp; Drop <span class="ht-best">Fastest</span></h4>
+              <p>Find your avatar in the <b>Avatar Gallery</b> tab. Click and <b>hold</b> on the picture, drag it over to the Replay tab/window, and <b>let go</b> inside the upload box.</p>
+              <p style="color:var(--text-dim);font-size:.88rem">Tip: put the two windows side by side, or drag onto the Replay tab at the top, wait for it to open, then drop in the box.</p>
+            </div>
+            <div class="ht-method">
+              <h4>📋 Copy &amp; Paste</h4>
+              <p>Click <b>Copy</b> under your avatar (or right-click the picture &rarr; <b>&ldquo;Copy Image&rdquo;</b>). Go to the Replay upload box and press <span class="kbd">Ctrl</span> + <span class="kbd">V</span> <span style="color:var(--text-dim)">(Mac: <span class="kbd">⌘</span> + <span class="kbd">V</span>)</span>.</p>
+            </div>
+            <div class="ht-method">
+              <h4>🔗 Copy the Link</h4>
+              <p>Click <b>Link</b> under your avatar to copy its web address. In the Replay upload box, click the <b>chain-link icon</b> in the left-hand menu, paste the link with <span class="kbd">Ctrl</span> + <span class="kbd">V</span>, and click the <b>arrow / submit</b> button.</p>
+            </div>
+            <div class="ht-method">
+              <h4>💾 Download to Your Computer</h4>
+              <p>Click <b>Save</b> under your avatar &mdash; it goes to your <b>Downloads</b> folder. In the Replay upload box click <b>&ldquo;Select Files to Upload&rdquo;</b>, open <b>Downloads</b>, and double-click the avatar file.</p>
+              <p style="color:var(--text-dim);font-size:.88rem">Handy for keeping your own copy, or for using it on another site later.</p>
+            </div>
+          </div>
+
+          <div class="ht-sub">Part C &mdash; Finish up</div>
+          <ol class="ht-steps">
+            <li>Your avatar appears in the box. Click the blue <b>&ldquo;Upload&rdquo;</b> button in the lower right corner.</li>
+            <li>In the next window, click the red <b>&ldquo;Update Profile&rdquo;</b> button &mdash; you&rsquo;re done! 🎉</li>
+          </ol>
+          <div class="ht-tip">If a paste or drop doesn&rsquo;t take, click once inside the upload box first and try again, or use the <b>Save</b> option &mdash; it works on every browser.</div>
+        </div>
+      </div>
+
+      <!-- METHOD 2: FRIEND'S PROFILE -->
+      <div class="ht-card">
+        <div class="ht-hdr"><span class="ic">👥</span><div><span class="ht-name">Method 2 &mdash; Copy It From a Friend&rsquo;s Profile</span><span class="ht-tag">The original way · 11 steps</span></div></div>
+        <div class="ht-body">
+          <div class="ht-sub">Copy your friend&rsquo;s avatar</div>
+          <ol class="ht-steps">
+            <li>On Replay, click the <b>drop-down arrow</b> at the top right and choose <b>&ldquo;Friends&rdquo;</b>.</li>
+            <li>Click the name of the friend who has the avatar you want.</li>
+            <li>Click on your friend&rsquo;s avatar.</li>
+            <li>The avatar pops up as a larger picture.</li>
+            <li>Right-click on the opened picture and choose <b>&ldquo;Copy Image&rdquo;</b>.</li>
+          </ol>
+          <div class="ht-sub">Put it on your profile</div>
+          <ol class="ht-steps" style="counter-reset:st 5">
+            <li>Click the <b>drop-down arrow</b> again and choose <b>&ldquo;Profile&rdquo;</b>.</li>
+            <li>When your profile opens, click <b>&ldquo;Edit Profile&rdquo;</b>.</li>
+            <li>Click the <b>&ldquo;Change&rdquo;</b> button next to your avatar.</li>
+            <li>When the upload box appears, press <span class="kbd">Ctrl</span> + <span class="kbd">V</span> together to paste the picture into the box.</li>
+            <li>The picture appears in the box &mdash; click the blue <b>&ldquo;Upload&rdquo;</b> button in the lower right corner.</li>
+            <li>In the next window, click the red <b>&ldquo;Update Profile&rdquo;</b> button &mdash; you&rsquo;re done!</li>
+          </ol>
+        </div>
+      </div>
+
+      <p class="li-note">Questions? Message _Rain_ or any league organizer &mdash; happy to help.</p>
+    </div>
+    </div><!-- end tab-howto -->
 
     <!-- LEAGUES INFO TAB -->
     <div id="tab-leagueinfo" style="display:none">
@@ -457,10 +574,61 @@
         const repo = 'Avatars';
 
         function switchTab(name) {
-            document.querySelectorAll('#tab-gallery, #tab-leagueinfo').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('#tab-gallery, #tab-howto, #tab-leagueinfo').forEach(p => p.style.display = 'none');
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('tab-' + name).style.display = 'block';
             document.querySelector(`.tab-btn[onclick="switchTab('${name}')"]`).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toast(msg) {
+            let t = document.getElementById('toast');
+            if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+            t.textContent = msg; t.classList.add('show');
+            clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2600);
+        }
+        function flash(btn, ok, label) {
+            const old = btn.dataset.label || btn.textContent; btn.dataset.label = old;
+            btn.textContent = label; btn.classList.add(ok ? 'ok' : 'err');
+            setTimeout(() => { btn.textContent = old; btn.classList.remove('ok', 'err'); }, 1800);
+        }
+        async function toPngBlob(url) {
+            const res = await fetch(url, { mode: 'cors' });
+            const blob = await res.blob();
+            if (blob.type === 'image/png') return blob;
+            const bmp = await createImageBitmap(blob);
+            const c = document.createElement('canvas'); c.width = bmp.width; c.height = bmp.height;
+            c.getContext('2d').drawImage(bmp, 0, 0);
+            return await new Promise(r => c.toBlob(r, 'image/png'));
+        }
+        async function copyImage(btn) {
+            const url = btn.closest('.avatar-card').dataset.url;
+            try {
+                if (!navigator.clipboard || !window.ClipboardItem) throw new Error('unsupported');
+                await navigator.clipboard.write([new ClipboardItem({ 'image/png': toPngBlob(url) })]);
+                flash(btn, true, '✓ Copied'); toast('Image copied! Now press Ctrl+V in Replay’s upload box.');
+            } catch (e) {
+                flash(btn, false, '✗'); toast('Your browser blocked copying — right-click the picture and choose “Copy Image”.');
+            }
+        }
+        async function copyLink(btn) {
+            const url = btn.closest('.avatar-card').dataset.url;
+            try {
+                await navigator.clipboard.writeText(url);
+                flash(btn, true, '✓ Copied'); toast('Link copied! Paste it using the 🔗 link icon in Replay’s upload box.');
+            } catch (e) { prompt('Copy this link:', url); }
+        }
+        async function downloadImage(btn) {
+            const card = btn.closest('.avatar-card');
+            const url = card.dataset.url, file = card.dataset.file;
+            try {
+                const blob = await (await fetch(url, { mode: 'cors' })).blob();
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob); a.download = file;
+                document.body.appendChild(a); a.click(); a.remove();
+                setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+                flash(btn, true, '✓ Saved'); toast('Saved to your Downloads folder as ' + file);
+            } catch (e) { window.open(url, '_blank'); }
         }
 
         async function initGallery() {
@@ -490,9 +658,14 @@
                             if (file.name.match(/\.(png|jpg|jpeg|gif)$/i)) {
                                 const cleanName = file.name.split('.')[0].replace(/([A-Z])/g, ' $1').trim();
                                 gallery.innerHTML += `
-                                    <div class="avatar-card">
-                                        <img src="${file.download_url}" alt="${cleanName}">
+                                    <div class="avatar-card" data-url="${file.download_url}" data-file="${file.name}">
+                                        <img src="${file.download_url}" alt="${cleanName}" crossorigin="anonymous" draggable="true" title="Drag me into Replay's upload box">
                                         <div class="name">${cleanName}</div>
+                                        <div class="card-actions">
+                                            <button class="act-btn" onclick="copyImage(this)" title="Copy the picture, then Ctrl+V in Replay">📋 Copy</button>
+                                            <button class="act-btn" onclick="copyLink(this)" title="Copy the picture's web link">🔗 Link</button>
+                                            <button class="act-btn" onclick="downloadImage(this)" title="Save to your computer">💾 Save</button>
+                                        </div>
                                     </div>`;
                             }
                         });
