@@ -153,6 +153,9 @@
     <!-- AVATAR GALLERY TAB -->
     <div id="tab-gallery">
         <p class="vault-hint">Drag any avatar straight into Replay&rsquo;s upload box, or use the <b>Copy</b>, <b>Link</b> and <b>Save</b> buttons under each one. New here? <a onclick="switchTab('howto')">See the step-by-step guide.</a></p>
+        <div style="text-align:center;margin-bottom:18px;">
+            <button class="tab-btn" onclick="refreshGallery(this)" style="font-size:.72rem;">🔄 Refresh Gallery</button>
+        </div>
         <div id="main-container">Loading League Folders...</div>
         <div style="margin-top: 80px; padding-bottom: 60px; text-align: center; clear: both;">
             <img id="league-counter" src="https://hitscounter.dev/api/hit?url=https%3A%2F%2Frainsplace.github.io%2FAvatars%2F&label=Visits&icon=cloud-drizzle&color=%23198754&style=flat">
@@ -688,6 +691,14 @@
                 localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), folders }));
                 renderGallery(folders);
             } catch (e) { container.textContent = `Error loading folders: ${e.message}`; }
+        }
+
+        function refreshGallery(btn) {
+            localStorage.removeItem(CACHE_KEY);
+            if (btn) { btn.textContent = '⏳ Loading…'; btn.disabled = true; }
+            initGallery().then(() => {
+                if (btn) { btn.textContent = '🔄 Refresh Gallery'; btn.disabled = false; }
+            });
         }
 
         initGallery();
